@@ -1,0 +1,47 @@
+/*
+Given an integer array, find three numbers whose product is maximum and output the maximum product.
+
+Example 1:
+
+Input: [1,2,3]
+Output: 6
+
+Example 2:
+
+Input: [1,2,3,4]
+Output: 24
+
+Note:
+	1. 
+The length of the given array will be in range [3,104] and all elements are in the range [-1000, 1000].
+	2. 
+Multiplication of any three numbers in the input won't exceed the range of 32-bit signed integer.
+
+*/
+
+//C语言
+int cmp(const void * a, const void * b)
+{
+    return *(int *)b - *(int *)a;
+}
+
+int maximumProduct(int* nums, int numsSize) {
+    qsort(nums,numsSize,sizeof(int),cmp);    //从大到小排序
+    int res_1 = nums[0]*nums[1]*nums[2];
+    int res_2;
+    if(nums[numsSize-1]<0 && nums[numsSize-2]<0)
+        res_2 = nums[0]*nums[numsSize-1]*nums[numsSize-2];
+    else
+        res_2 = 0;
+    return res_1>res_2?res_1:res_2;                                  
+}
+
+//Python
+def maximumProduct(self, nums):
+        nums.sort()
+        return max(nums[-1] * nums[-2] * nums[-3], nums[0] * nums[1] * nums[-1])
+        
+//Python 内置模块 heapq
+def maximumProduct(self, nums):
+        a, b = heapq.nlargest(3, nums), heapq.nsmallest(2, nums)   //内置模块；前者取最大的三个值；后者取最小的两个值
+        return max(a[0] * a[1] * a[2], b[0] * b[1] * a[0])
