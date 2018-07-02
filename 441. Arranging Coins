@@ -34,3 +34,11 @@ Because the 4th row is incomplete, we return 3.
 int arrangeCoins(int n) {
     return floor(-0.5+sqrt((double)2*n+0.25));
 }
+
+//C 
+int arrangeCoins(int n) {
+    int i = 1;
+    while(n >= i) n -= i, i++;
+        return i - 1;
+
+}
