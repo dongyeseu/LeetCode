@@ -1,0 +1,77 @@
+Given a non-negative integer num, repeatedly add all its digits until the result has only one digit.
+
+Example:
+
+Input: 38
+Output: 2 
+Explanation: The process is like: 3 + 8 = 11, 1 + 1 = 2. 
+             Since 2 has only one digit, return it.
+Follow up:
+Could you do it without any loop/recursion in O(1) runtime?
+
+
+//My Answer
+int Add(int n)  //将数各个位置相加
+{
+    int res = 0;
+    while(n)
+    {
+        res += n%10;
+        n /= 10;
+    }
+    return res;
+}
+
+int addDigits(int num) {
+    while(num>9)
+    {
+        num = Add(num);
+    }
+    return num;
+    
+}
+
+
+//他山之玉
+int addDigits(int num) {
+    int res = num % 9;
+    return (res != 0 || num == 0) ? res : 9;
+}
+//解释：The essence of this problem is that 10^n ≡ 1 (mod 9), and thus a_n10^n + ... + a_110 + a_0 ≡ a_n + ... + a_1 + a_0 (mod 9). 
+//This process can be continued until a number less than 9 is gotten, i.e. num % 9. For any digit n, n = n % 9 unless n = 9. 
+//The only confusing case is n % 9 = 0, but addDigits(num) = 0 if and only if num = 0, otherwise it should be 9 in fact.
+
+
+/*
+this method depends on the truth:
+
+N=(a[0] * 1 + a[1] * 10 + ...a[n] * 10 ^n),and a[0]...a[n] are all between [0,9]
+
+we set M = a[0] + a[1] + ..a[n]
+
+and another truth is that:
+
+1 % 9 = 1
+
+10 % 9 = 1
+
+100 % 9 = 1
+
+so N % 9 = a[0] + a[1] + ..a[n]
+
+means N % 9 = M
+
+so N = M (% 9)
+
+as 9 % 9 = 0,so we can make (n - 1) % 9 + 1 to help us solve the problem when n is 9.as N is 9, ( 9 - 1) % 9 + 1 = 9
+*/
+
+//Python
+class Solution(object):
+def addDigits(self, num):
+    """
+    :type num: int
+    :rtype: int
+    """
+    if num == 0 : return 0
+    else:return (num - 1) % 9 + 1
