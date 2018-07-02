@@ -1,0 +1,63 @@
+/*
+Given an integer, write a function to determine if it is a power of three.
+
+Example 1:
+
+Input: 27
+Output: true
+Example 2:
+
+Input: 0
+Output: false
+Example 3:
+
+Input: 9
+Output: true
+Example 4:
+
+Input: 45
+Output: false
+Follow up:
+Could you do it without using any loop / recursion?
+*/
+
+//My Answer
+//判断是否含有除3以外的因子
+bool isPowerOfThree(int n) {
+    if(n <= 0)
+        return false;
+
+    else
+    {
+        while(n%3 == 0)
+            n /= 3;
+        if(n == 1)
+            return true;
+        else
+            return false;
+    }
+}
+
+
+//他山之玉
+//Python     
+class Solution(object):
+    def isPowerOfThree(self, n):
+        return n > 0 and 1162261467 % n == 0
+        
+//C
+bool isPowerOfThree(int p) {
+        return  p>0 && 1162261467%p == 0 ;
+}
+
+//Python ： 使用内置函数
+import math
+class Solution(object):
+    def isPowerOfThree(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        if n < 1: return False
+        x = math.log(n,3)
+        return abs(round(x) - x) < 0.0000000000001
