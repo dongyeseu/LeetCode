@@ -1,0 +1,87 @@
+/*
+Implement int sqrt(int x).
+
+Compute and return the square root of x, where x is guaranteed to be a non-negative integer.
+
+Since the return type is an integer, the decimal digits are truncated and only the integer part of the result is returned.
+
+Example 1:
+
+Input: 4
+Output: 2
+Example 2:
+
+Input: 8
+Output: 2
+Explanation: The square root of 8 is 2.82842..., and since 
+             the decimal part is truncated, 2 is returned.
+*/
+
+//My Answer
+//用long long
+int mySqrt(int x) {
+    if (x<0)
+        return false;
+    long long i;
+    for(i=0 ; i*i < x ; i++);
+    if(i*i == x)
+        return (int)i;
+    else
+        return (int)i - 1;
+}
+
+//他山之玉
+//C++
+Binary search and high is always converged to the one that 1 larger than the result.
+
+class Solution {
+public:
+    int mySqrt(int x) {
+        int low = 0,  high = x, mid;
+        if(x<2) return x; // to avoid mid = 0
+        while(low<high)
+        {
+            mid = (low + high)/2;
+            if(x/mid >= mid) low = mid+1;
+            else high = mid;
+        }
+        return high-1;
+        
+    }
+};
+
+
+//Newton's Method
+//C++ 
+class Solution {
+public:
+    int mySqrt(int x) {
+        int y = 1;
+        int n = x;
+        while (n > y) {
+            n = y +  (n - y) / 2;
+            y = x / n;
+        }
+        return n;
+    }
+};
+
+
+//C 
+int mySqrt(int x) {
+    if (x<=1) return x;
+    long long lb=1, rb=x, md;
+    while(rb-lb>1)
+    {
+        md = (rb+lb)/2;
+        if (md*md==x)
+            return md;
+        if (md*md>x)
+            rb=md;
+        else
+            lb=md;
+    }
+    if (rb*rb==x)
+        return rb;
+    return lb;
+}
