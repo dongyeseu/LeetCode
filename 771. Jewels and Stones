@@ -30,3 +30,35 @@ int numJewelsInStones(char* J, char* S) {
     }
     return sum;
 }
+
+
+//思路二： 哈希表
+//C++
+int numJewelsInStones(string J, string S) {
+        int res = 0;
+        unordered_set<char> setJ(J.begin(), J.end());
+        for (char s : S) if (setJ.count(s)) res++;
+        return res;
+    }
+    
+    
+//他山之玉
+//Python
+return len([x for x in S if x in J])
+
+//C
+//思路：用字符串中的字符的ASCII值作为下标，记录字符串S中各个字符出现的次数，然后比较J中包含的S的字符所代表的次数值相加
+int numJewelsInStones(char* J, char* S) {
+	int arrlen = 'z'+1;
+	char* arr = (char*)malloc(arrlen);
+	memset(arr, 0, arrlen);
+	for (int i = 0; i < strlen(S); i ++) {
+		arr[S[i]] += 1;	
+	}
+	int cnt = 0;
+	for (int j = 0; j < strlen(J); j ++) {
+		cnt += arr[J[j]];
+	}
+	free(arr);
+	return cnt;
+}
