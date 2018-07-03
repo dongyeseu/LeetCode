@@ -1,0 +1,60 @@
+/*
+Given a string, find the first non-repeating character in it and return it's index. If it doesn't exist, return -1.
+
+Examples:
+
+s = "leetcode"
+return 0.
+
+s = "loveleetcode",
+return 2.
+*/
+
+//My Answer
+//思路：将字母以下标的形式记录，记录它的出现次数，然后再一次遍历字符串，看哪个字母最先只有一次
+int firstUniqChar(char* s) {
+    int alpha[26] = {0};
+    int len =strlen(s);
+    for(int i = 0; i<len ; i++)
+    {
+        alpha[s[i]-'a']++;
+    }
+    for(int i=0 ; i<len ; i++)
+    {
+        if(alpha[s[i]-'a'] == 1)
+            return i;
+    }
+    return -1;
+}
+
+
+//他山之玉
+//思路和我一样，Java
+public class Solution {
+    public int firstUniqChar(String s) {
+        int freq [] = new int[26];
+        for(int i = 0; i < s.length(); i ++)
+            freq [s.charAt(i) - 'a'] ++;
+        for(int i = 0; i < s.length(); i ++)
+            if(freq [s.charAt(i) - 'a'] == 1)
+                return i;
+        return -1;
+    }
+}
+
+//Python
+
+Last Edit: June 11, 2018 6:14 AM
+
+gregs
+gregs
+ 21
+    def firstUniqChar(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        
+        letters='abcdefghijklmnopqrstuvwxyz'
+        index=[s.index(l) for l in letters if s.count(l) == 1]
+        return min(index) if len(index) > 0 else -1
