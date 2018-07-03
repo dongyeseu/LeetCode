@@ -10,4 +10,97 @@ Each element in the result must be unique.
 The result can be in any order.
 
 */
+
+//My Answer
+//思路：先对两个数组从小到大进行排序，然后依次对其元素从左到右进行比较，如果是重复的相等元素，并不考虑
+int cmp(const void * a, const void * b)
+{
+    return (*(int*)a - *(int*)b);
+}
+
+int* intersection(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
+    qsort(nums1,nums1Size,sizeof(int),cmp);
+    qsort(nums2,nums2Size,sizeof(int),cmp);
+    int len = nums1Size < nums2Size ? nums1Size : nums2Size;
+    int * res = malloc(sizeof(int)*len);
+    int length = 0;
+    int i = 0 ,j = 0;
+    while(i<nums1Size && j<nums2Size)
+    {
+        if(nums1[i]>nums2[j])
+            j++;
+        else if(nums1[i]<nums2[j])
+            i++;
+        else if(nums1[i] == nums2[j])
+        {
+            if(length!=0 && nums1[i]!=res[length-1])
+            {
+                res[length++] = nums1[i];
+            }
+            else if(length == 0)
+            {
+                res[length++] = nums1[i];
+            }
+            i++;
+            j++;
+        }
+    }
+    *returnSize = length;
+    return res;
+    
+}
   
+  
+//他山之玉
+//Python ： list & set 的运用
+class Solution(object):
+    def intersection(self, nums1, nums2):
+        return list(set(nums1) & set(nums2))
+        
+//C++
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        std::sort(nums1.begin(), nums1.end());
+        std::sort(nums2.begin(), nums2.end());
+        vector<int> ans;
+        int i = 0, j = 0;
+        while (i < nums1.size() && j < nums2.size())
+        {
+            if (nums1[i] < nums2[j])
+                i++;
+            else if (nums1[i] > nums2[j])
+                j++;
+            else
+            {
+                if (!ans.size() || ans.back() != nums1[i])
+                    ans.push_back(nums1[i]);
+                i++;
+                j++;
+            }
+        }
+        return ans;
+    }
+};
+
+
+//Python
+class Solution(object):
+    def intersection(self, nums1, nums2):
+        res = []
+        nums1.sort()
+        nums2.sort()
+        i = j = 0
+        
+        while i < len(nums1) and j < len(nums2):
+            if nums1[i] > nums2[j]:
+                j += 1
+            elif nums1[i] < nums2[j]:
+                i += 1
+            else:
+                if nums1[i] not in res:
+                    res.append(nums1[i])
+                i += 1
+                j += 1
+        
+        return res
