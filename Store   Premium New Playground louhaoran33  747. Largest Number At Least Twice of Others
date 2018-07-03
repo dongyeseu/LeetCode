@@ -1,0 +1,112 @@
+/*
+In a given integer array nums, there is always exactly one largest element.
+
+Find whether the largest element in the array is at least twice as much as every other number in the array.
+
+If it is, return the index of the largest element, otherwise return -1.
+
+Example 1:
+
+Input: nums = [3, 6, 1, 0]
+Output: 1
+Explanation: 6 is the largest integer, and for every other number in the array x,
+6 is more than twice as big as x.  The index of value 6 is 1, so we return 1.
+ 
+
+Example 2:
+
+Input: nums = [1, 2, 3, 4]
+Output: -1
+Explanation: 4 isn't at least as big as twice the value of 3, so we return -1.
+ 
+
+Note:
+
+nums will have a length in the range [1, 50].
+Every nums[i] will be an integer in the range [0, 99].
+*/
+
+//My Answer
+//思路：先对原数组copy一个，然后对新数组进行从大到小的排序，判断第一个值和第二个值之间的关系；另外要注意释放数组内存以及数组大小
+int cmp(const void * a,const void * b)
+{
+    return *(int *)b - *(int *)a;
+}
+int dominantIndex(int* nums, int numsSize) {
+    int * p = malloc(sizeof(int)*numsSize);
+    for(int i = 0; i < numsSize ; i++)
+        p[i] = nums[i];
+    qsort(p,numsSize,sizeof(int),cmp);
+    int max;
+    if(numsSize==1)
+        return 0;
+    else if(p[0] >= p[1]*2)
+        max = p[0];
+    else
+        return -1;
+    free(p);
+    for(int i =0 ; i<numsSize ; i++)
+    {
+        if(nums[i] == max)
+            return i;
+    }
+    return -1;
+        
+}
+
+
+//他山之玉
+class Solution {
+public:
+    int dominantIndex(vector<int>& nums) {
+        int maxn = INT_MIN, idx = -1, sec = INT_MIN;
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i] > maxn) {
+                sec = maxn;
+                maxn = nums[i];
+                idx = i;
+            } else if(nums[i] > sec){
+                sec = nums[i];
+            }
+        }
+        return sec * 2 > maxn ? -1 : idx;
+    }
+};
+
+//Java
+class Solution {
+    public int dominantIndex(int[] nums) {
+        
+        if (nums.length < 2) return 0;
+        
+        Integer first = null, second = null;
+        
+        for (int i = 0; i < nums.length; i++) {
+            if (first == null || nums[first] < nums[i]) {
+                second = first;
+                first = i;
+            } else if (second == null || nums[second] < nums[i]) {
+                second = i;
+            }
+        }
+        
+        return (nums[second] * 2 <= nums[first]) ? first : -1;
+    }
+}
+
+//Python
+class Solution(object):
+    def dominantIndex(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        k = max(nums)
+        x = nums.index(k)
+        for i in range(len(nums)):
+            if i == x:
+                continue
+            else:
+                if nums[i]*2 > k:
+                    return -1
+        return x
