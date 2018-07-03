@@ -1,0 +1,92 @@
+/*
+
+Given a non-negative integer c, your task is to decide whether there're two integers a and b such that a2 + b2 = c.
+
+Example 1:
+Input: 5
+Output: True
+Explanation: 1 * 1 + 2 * 2 = 5
+Example 2:
+Input: 3
+Output: False
+*/
+
+
+
+
+
+//My Answer
+bool judgeSquareSum(int c) {
+    if(c < 0)
+        return false;
+    int a = 0;
+    int b = sqrt(c);
+    while(a <= b)
+    {
+        if(a*a + b*b == c) 
+            return true;
+        else if (a*a + b*b > c)
+            b--;
+        else 
+            a++;
+    }
+    return false;
+    
+}
+
+
+//他山之玉
+//C++
+bool judgeSquareSum(int c) {
+        for(int i=0;i<=sqrt(c);i++) {
+            int t=sqrt(c-i*i);
+            if(t*t==c-i*i) return true;
+        }
+        return false;
+        
+        
+//Python ：
+ d=int(math.sqrt(c))
+    for i in range(d+1):
+        if math.sqrt(c-math.pow(i,2)).is_integer():
+            return True
+    return False
+    
+    
+//Python
+class Solution:
+    def judgeSquareSum(self, c):
+        """
+        :type c: int
+        :rtype: bool
+        """
+        sq = set()
+        count = int(math.sqrt(c))
+        # use (count + 1) because first index is 0
+        for i in range(count + 1):
+            sq.add(i ** 2)
+
+        for n in sq:
+            if c - n in sq:
+                return True
+
+        return False
+        
+        
+  //Python
+   for i in range(int(c**0.5)+1):
+        if ((c-i*i)**0.5).is_integer(): return True
+    return False
+    
+    
+ //C
+ bool judgeSquareSum(int c) {
+    if(sqrt(c)==(int)sqrt(c)){return true;}
+    int temp=0;
+    for(int i=1;i<=c/i;i++){
+        temp=c-i*i;
+        if(sqrt(temp)==(int)sqrt(temp)){return true;}
+    }
+    return false;
+}
+  
