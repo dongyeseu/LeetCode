@@ -1,0 +1,90 @@
+/*
+
+Given a positive integer num, write a function which returns True if num is a perfect square else False.
+
+Note: Do not use any built-in library function such as sqrt.
+
+Example 1:
+
+Input: 16
+Returns: True
+Example 2:
+
+Input: 14
+Returns: False
+*/
+
+
+//My Answer
+//思路：不断增加i,比较i的平方与num的大小；注意一定要使用long long 类型，否则i*i会超过INT_MAX
+bool isPerfectSquare(int num) {
+    long long i;
+    for(i=0 ; i*i < num ; i++);
+    if(i*i == num)
+        return true;
+    else
+        return false;
+}
+
+
+//他山之玉
+//C/C+
+class Solution {
+public:
+    bool isPerfectSquare(int num) {
+        if (num < 0) return false;
+        int root = floorSqrt(num);
+        return root * root == num;
+    }
+
+    int32_t floorSqrt(int32_t x) {
+        double y=x; int64_t i=0x5fe6eb50c7b537a9;
+        y = *(double*)&(i = i-(*(int64_t*)&y)/2);
+        y = y * (3 - x * y * y) * 0.5;
+        y = y * (3 - x * y * y) * 0.5;
+        i = x * y + 1; return i - (i * i > x);
+    }
+};
+
+
+//Newton's Method
+//Python
+class Solution(object):
+    def isPerfectSquare(self, num):
+        """
+        :type num: int
+        :rtype: bool
+        """
+        if num < 0: return False
+        if num <= 1: return True
+        n = num/2  # start guessing using n = num/2
+        while n*n!= num:
+            inc = (num-n*n)/(2*n)
+            n += inc
+            if -1 <= inc <= 1: break
+        if n*n < num: n+=1
+        if n*n > num: n-=1
+        return n*n == num
+f(x) = x^2 (find x that f(x) = num)
+
+f'(x) = 2*x
+
+start process with x = n (any positive number)
+
+if f(x) != num, update x = x + (num - f(x))/f'(x) = x + (num - n^2)/(2n)
+
+
+//Python
+class Solution(object):
+    def isPerfectSquare(self, num):
+        b, e = 1, (num >> 1) + 1
+        while b <= e:
+            mid = (b + e) >> 1
+            sq = mid * mid
+            if sq == num:
+                return True
+            if sq > num:
+                e = mid - 1
+            else:
+                b = mid + 1
+        return False
