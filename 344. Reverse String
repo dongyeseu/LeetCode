@@ -1,0 +1,65 @@
+
+Write a function that takes a string as input and returns the string reversed.
+
+Example:
+Given s = "hello", return "olleh".
+
+
+
+
+//My Answer
+char* reverseString(char* s) {
+    if(s == NULL)
+        return NULL;
+    char * p;
+    int len = strlen(s);
+    int length = len;
+    p = malloc(sizeof(char)*(len+1));
+    p[len] = '\0';
+    for(int i=0 ; i<length ; i++)
+        p[i] = s[--len];
+    return p;
+}
+
+//他山之玉
+//C++ 内置函数swap（）
+class Solution {
+public:
+    string reverseString(string s) {
+        int i = 0, j = s.size() - 1;
+        while(i < j){
+            swap(s[i++], s[j--]); 
+        }
+        
+        return s;
+    }
+};
+
+
+//C
+char* reverseString(char* s) {
+ int l = 0;
+ int r = strlen(s)-1;
+ char c;
+ 
+ while(l<r)
+ {
+     // swap chars
+     c = s[l];
+     s[l] = s[r];
+     s[r] = c;
+     l++;
+     r--;
+ }
+ 
+ return s;
+
+
+//Python
+   class Solution(object):
+        def reverseString(self, s):
+            """
+            :type s: str
+            :rtype: str
+            """
+            return s[::-1]
