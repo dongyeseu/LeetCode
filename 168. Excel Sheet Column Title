@@ -1,0 +1,89 @@
+/*
+Given a positive integer, return its corresponding column title as appear in an Excel sheet.
+
+For example:
+
+    1 -> A
+    2 -> B
+    3 -> C
+    ...
+    26 -> Z
+    27 -> AA
+    28 -> AB 
+    ...
+Example 1:
+
+Input: 1
+Output: "A"
+Example 2:
+
+Input: 28
+Output: "AB"
+Example 3:
+
+Input: 701
+Output: "ZY"
+*/
+
+//My Answer
+//根本上是进制转换问题，在'Z'的时候要注意；然后数组内存分配问题
+char* convertToTitle(int n) {
+    char * p;
+    p = malloc(sizeof(char)*8);
+    int j = 0;
+    int mid;
+    while(n!=0)
+    {
+        mid = n%26;
+        if(mid == 0)
+        {
+            mid = 26;
+            n -= 26;
+        }
+        n /= 26;
+        p[j++] = mid + 'A' - 1;
+    }
+    p[j] = '\0';
+    j = j -1;
+    int i;
+    while(i < j)
+    {
+        char ch;
+        ch = p[i];
+        p[i] = p[j];
+        p[j] = ch;
+        i++;
+        j--;
+    }
+    return p;
+}
+
+
+//他山之玉
+//C++
+return n == 0 ? "" : convertToTitle(n / 26) + (char) (--n % 26 + 'A');
+//Python
+return "" if num == 0 else self.convertToTitle((num - 1) / 26) + chr((num - 1) % 26 + ord('A'))
+
+//C++
+string convertToTitle(int n) {
+    string res;
+    char tmp
+    while(n){
+        n -= 1;
+        tmp = 'A' + n % 26;
+        res = tmp + res;
+        n /= 26;
+    }
+    return res;
+}
+
+//C++ 
+string convertToTitle(int n) {
+	string res="";
+    while(n>0){
+		res=char('A'+(n-1)%26)+res;
+		n=(n-1)/26;
+	}
+	return res;
+}
