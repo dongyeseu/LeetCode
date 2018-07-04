@@ -1,0 +1,105 @@
+/*
+Given a list of sorted characters letters containing only lowercase letters, and given a target letter target, find the smallest element in the list that is larger than the given target.
+
+Letters also wrap around. For example, if the target is target = 'z' and letters = ['a', 'b'], the answer is 'a'.
+
+Examples:
+Input:
+letters = ["c", "f", "j"]
+target = "a"
+Output: "c"
+
+Input:
+letters = ["c", "f", "j"]
+target = "c"
+Output: "f"
+
+Input:
+letters = ["c", "f", "j"]
+target = "d"
+Output: "f"
+
+Input:
+letters = ["c", "f", "j"]
+target = "g"
+Output: "j"
+
+Input:
+letters = ["c", "f", "j"]
+target = "j"
+Output: "c"
+
+Input:
+letters = ["c", "f", "j"]
+target = "k"
+Output: "c"
+Note:
+letters has a length in range [2, 10000].
+letters consists of lowercase letters, and contains at least 2 unique letters.
+target is a lowercase letter.
+*/
+
+//思路一：线性比较
+char nextGreatestLetter(char* letters, int lettersSize, char target) {
+    if(target >= letters[lettersSize -1])
+        return letters[0];
+    for(int i = 0 ; i<lettersSize ; i++)
+    {
+        if(letters[i]>target)
+            return letters[i];
+    }
+    return letters[0];
+}
+
+
+//思路二：二分查找
+char nextGreatestLetter(char* letters, int lettersSize, char target) {
+    if(target >= letters[lettersSize -1])
+        return letters[0];
+    int Left = 0, Right = lettersSize - 1;
+    while(Left < Right)
+    {
+        int mid = Left + (Right - Left)/2;
+        if(letters[mid]>target)
+            Right = mid;
+        else
+            Left = mid + 1;
+    }
+    return letters[Left];
+}
+
+
+//他山之玉
+//Python
+class Solution(object):
+    def nextGreatestLetter(self, letters, target):
+        for letter in letters:
+            if letter > target:
+                return letter
+        return letters[0] # If not found
+      
+      
+//C++
+class Solution {
+public:
+    char nextGreatestLetter(vector<char>& letters, char target) {
+        auto it = upper_bound(letters.begin(), letters.end(), target);
+        return it == letters.end() ? letters[0] : *it;
+    }
+};
+
+
+//C++
+class Solution {
+public:
+    char nextGreatestLetter(vector<char>& letters, char target) {
+        if (letters.back() <= target) return letters.front();
+        int low = 0, high = letters.size() - 1;
+        while (low < high) {
+            auto mid = (low + high) / 2;
+            if (target < letters[mid]) high = mid;
+            else low = mid + 1;
+        }
+        return letters[low];
+    }
+};
