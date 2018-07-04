@@ -1,0 +1,107 @@
+/*
+The set S originally contains numbers from 1 to n. But unfortunately, due to the data error, one of the numbers in the set got duplicated to another number in the set, which results in repetition of one number and loss of another number.
+
+Given an array nums representing the data status of this set after the error. Your task is to firstly find the number occurs twice and then find the number that is missing. Return them in the form of an array.
+
+Example 1:
+Input: nums = [1,2,2,4]
+Output: [2,3]
+Note:
+The given array size will in the range [2, 10000].
+The given array's numbers won't have any order.
+*/
+
+
+
+//My Answer
+//思路;先对数组进行排序，对重复元素取出并对其赋值为-1；然后再一次排序，比较非-1数和1~n中存在的缺失数，加入数组a中
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int cmp(const void * a, const void * b)
+{
+    return *(int *)a - *(int *)b;
+}
+int* findErrorNums(int* nums, int numsSize, int* returnSize) {
+    qsort(nums,numsSize,sizeof(int),cmp);
+    int * a = malloc(sizeof(int)*numsSize);
+    int j=0;
+    int i;
+    for(i=0 ; i<numsSize-1 ; i++)
+    {
+        if(nums[i] == nums[i+1])
+        {
+            a[j++] = nums[i];
+            nums[i] = -1;
+        }
+    }
+    qsort(nums,numsSize,sizeof(int),cmp);
+    int len = j; //记录此时数组a中的元素个数
+    for(i=1 ; i<=numsSize ; i++)
+    {
+        if(nums[j] == i)
+        {
+            j++;
+        }
+        else
+        {
+            a[len++] = i;
+        }
+    }
+    *returnSize = len;
+    return a;
+}
+
+
+//他山之玉
+//C++
+vector<int> findErrorNums(vector<int>& nums) {
+        for(int i = 0; i<nums.size(); i++){
+            while(nums[i] != nums[nums[i] - 1])swap(nums[i], nums[nums[i] - 1]);
+        }
+        for(int i = 0; i<nums.size() ; i++){
+            if(nums[i] != i + 1)return {nums[i], i + 1};
+        }
+    }
+    
+//Python
+class Solution(object):
+    def findErrorNums(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        ans = []
+        if nums:
+            s = set()
+            for x in nums:
+                if x in s:
+                    ans.append(x)
+                s.add(x)
+            n = len(nums)
+            
+            ans.append( sum(range(1,n+1)) - sum(s) )
+            
+        return ans
+        
+        
+ //C++
+ class Solution {
+public:
+    vector<int> findErrorNums(vector<int>& nums) {
+        vector<int> vec;
+        int num = 0, res = 0;
+        unordered_map<int, int> map;
+        for (int i = 1; i <= nums.size(); i++) {
+            if (find(nums.begin(), nums.end(), i) ==  nums.end())
+                num = i;
+            map[nums[i - 1]]++;
+            if (map[nums[i - 1]] == 2)
+                res = nums[i - 1];
+        }
+        vec.push_back(res);
+        vec.push_back(num);
+        return vec;
+    }
+};
