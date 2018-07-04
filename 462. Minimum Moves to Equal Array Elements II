@@ -1,0 +1,57 @@
+/*
+Given a non-empty integer array, find the minimum number of moves required to make all array elements equal, where a move is incrementing a selected element by 1 or decrementing a selected element by 1.
+
+You may assume the array's length is at most 10,000.
+
+Example:
+
+Input:
+[1,2,3]
+
+Output:
+2
+
+Explanation:
+Only two moves are needed (remember each move increments or decrements one element):
+
+[1,2,3]  =>  [2,2,3]  =>  [2,2,2]
+*/
+
+//My Answer
+//思路：其实这也是一个数学问题，找到数组的中位数，然后将其与其他元素的差值相加
+int cmp(const void * a,const void * b)
+{
+    return *(int *)a - *(int *)b;
+}
+int minMoves2(int* nums, int numsSize) {
+    qsort(nums,numsSize,sizeof(int),cmp);
+    int mid = nums[numsSize/2];
+    int count = 0;
+    for(int i = 0 ; i < numsSize ; i++)
+        count += abs(nums[i] - mid);
+    return count;
+}
+
+
+//他山之玉
+//Python
+def minMoves2(self, nums):
+    median = sorted(nums)[len(nums) / 2]
+    return sum(abs(num - median) for num in nums)
+    
+//C++
+class Solution {
+public:
+int minMoves2(vector<int>& nums) {
+  sort(nums.begin(),nums.end()); 
+  
+  /* Sort the vector to find the median. Note that though this takes O(nlogn) time, it can be done in O(n) using Quick Select Algorithm.*/
+    
+  int median = nums[nums.size()/2]; // Works for both odd and even number of elements
+  int res = 0;
+  for(int i=0;i<nums.size();i++)
+  {
+      res += abs(nums[i]-median); // How far is each element from median
+  }
+  return res;
+}};
