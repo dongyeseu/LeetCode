@@ -1,0 +1,78 @@
+/*Given a non-empty array of integers, every element appears twice except for one. Find that single one.
+
+Note:
+
+Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+
+Example 1:
+
+Input: [2,2,1]
+Output: 1
+Example 2:
+
+Input: [4,1,2,1,2]
+Output: 4
+*/
+
+//My Answer
+//思路：Python中，先将列表转换为set，然后对两者求和、求差
+class Solution:
+    def singleNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        Nums = set(nums);
+        sum_1 = sum(nums);
+        sum_2 = sum(Nums);
+        return sum_2 * 2 - sum_1;
+        
+//思路二：C中，先对数组进行排序，然后判断元素前后的是否存在与其相等的元素
+int cmp(const void * a, const void * b)
+{
+    return *(int *)a - *(int *)b;
+}
+
+int singleNumber(int* nums, int numsSize) {
+    qsort(nums,numsSize,sizeof(int),cmp);
+    for(int i=0 ; i<numsSize ; i++)
+    {
+        if((i==numsSize-1 || nums[i]!=nums[i+1]) && (i==0 || nums[i] !=nums[i-1]))
+            return nums[i];
+    }
+    return NULL;    
+}
+
+
+//他山之玉
+//C++
+int singleNumber(int A[], int n) {   //这里的重点是^(异或）的用法，及a^0 = a, a^a = 0, (res ^= a, res ^=a 又回到原来的res)
+    int result = 0;
+    for (int i = 0; i<n; i++)
+    {
+		result ^=A[i];
+    }
+	return result;
+}
+
+
+//Python
+def singleNumber1(self, nums):
+    dic = {}
+    for num in nums:
+        dic[num] = dic.get(num, 0)+1
+    for key, val in dic.items():
+        if val == 1:
+            return key
+           
+def singleNumber2(self, nums):
+    res = 0
+    for num in nums:
+        res ^= num
+    return res
+    
+def singleNumber3(self, nums):
+    return 2*sum(set(nums))-sum(nums)
+    
+def singleNumber4(self, nums):
+    return reduce(lambda x, y: x ^ y, nums)
