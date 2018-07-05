@@ -1,0 +1,102 @@
+/*
+Given a string S and a character C, return an array of integers representing the shortest distance from the character C in the string.
+
+Example 1:
+
+Input: S = "loveleetcode", C = 'e'
+Output: [3, 2, 1, 0, 1, 0, 0, 1, 2, 2, 1, 0]
+
+Note:
+S string length is in [1, 10000].
+C is a single character, and guaranteed to be in string S.
+All letters in S and C are lowercase.
+*/
+
+
+//My Answer
+//思路：先找到数组中第一个C的位置，然后正着遍历，记录数组中元素距离最后一个出现的C的位置；然后逆着遍历，记录元素距离最后一个C出现的位置
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* shortestToChar(char* S, char C, int* returnSize) {
+    int len = strlen(S);
+    *returnSize = len;
+    int * res = malloc(sizeof(int)*len);
+    int location ; //记录当前出现的C的位置
+    for(int i = 0 ; i<len ; i++)  //其实这一步可以不需要，因为存在逆序遍历的过程
+    {
+        if(S[i] == C)
+            location = i;
+    }
+    for(int i = 0 ; i< len ; i++)
+    {
+        if(S[i] == C)
+        {
+            res[i] = 0;
+            location = i;
+        }
+        else
+        {
+            res[i] = abs(i-location);
+        }
+    }
+    for(int i = len-1 ; i>= 0 ; i--)
+    {
+        if(S[i] == C)
+        {
+            location = i;
+        }
+        else
+        {
+            int re = abs(location - i);
+            res[i] = res[i] <= re ? res[i] : re;
+        }
+    }
+    return res;
+    
+}
+
+
+//他山之玉 ：思路大体上和我类似，正反两次遍历
+C++
+    vector<int> shortestToChar(string S, char C) {
+        int n = S.size();
+        vector<int> res(n, n);
+        int pos = -n;
+        for (int i = 0; i < n; ++i) {
+            if (S[i] == C) pos = i;
+            res[i] = min(res[i], abs(i - pos));
+        }
+        for (int i = n - 1; i >= 0; --i) {
+            if (S[i] == C)  pos = i;
+            res[i] = min(res[i], abs(i - pos));
+        }
+        return res;
+    }
+    
+Python
+    def shortestToChar(self, S, C):
+        n = len(S)
+        res = [n] * n
+        pos = -n
+        for i in range(n) + range(n)[::-1]:
+            if S[i] == C: pos = i
+            res[i] = min(res[i], abs(i - pos))
+        return res
+        
+//C++
+vector<int> shortestToChar(string S, char C) {
+    int len = S.length(), loc = -1;
+    vector<int> result(len, INT_MAX);
+    
+    for(int i = 0; i < len; i++) {
+        if(S[i] == C) loc = i;
+        result[i] = min(result[i], loc != -1 ? abs(i - loc) : INT_MAX);
+    }
+    for(int i = len - 1; i >= 0; i--) {
+        if(S[i] == C) loc = i;
+        result[i] = min(result[i], abs(i - loc));
+    }  
+    return result;
+}
