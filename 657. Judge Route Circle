@@ -1,0 +1,68 @@
+/*
+Initially, there is a Robot at position (0, 0). Given a sequence of its moves, judge if this robot makes a circle, which means it moves back to the original place.
+
+The move sequence is represented by a string. And each move is represent by a character. The valid robot moves are R (Right), L (Left), U (Up) and D (down). The output should be true or false representing whether the robot makes a circle.
+
+Example 1:
+Input: "UD"
+Output: true
+Example 2:
+Input: "LL"
+Output: false
+*/
+
+//My Answer
+//遍历字符串，用数组记录每个字符出现的次数，比较：'L'&'R' 'U'&'D的次数 ；另一种思路可以使用Python的字典 或者 count 函数
+bool judgeCircle(char* moves) {
+    if(moves == NULL)
+        return true;
+    int a[26] = {0};
+    int len = strlen(moves);   //必须提前求出，放入判断条件中会导致超时
+    for(int i = 0 ; i < len ; i++)
+        a[moves[i] - 'A']++;
+    if((a['R'-'A'] == a['L'-'A']) && (a['U'-'A'] == a['D'-'A']))
+        return true;
+    else
+        return false;
+    
+}
+
+//Python
+def judgeCircle(self, moves):
+    return moves.count('L') == moves.count('R') and moves.count('U') == moves.count('D')
+    
+    
+//他山之玉
+C++
+class Solution {
+public:
+    bool judgeCircle(string moves) {
+        int v = 0;
+        int h = 0;
+        for (char ch : moves) {
+            switch (ch) {
+                case 'U' : v++; break;
+                case 'D' : v--; break;
+                case 'R' : h++; break;
+                case 'L' : h--; break;
+            }
+        }
+        return v == 0 && h == 0;
+    }
+};
+
+//Python
+def judgeCircle(self, moves):
+    c = collections.Counter(moves)
+    return c['L'] == c['R'] and c['U'] == c['D']
+    
+//C++
+class Solution {
+public:
+    bool judgeCircle(string moves) {
+        unordered_map<char, int> c;
+        for ( char m : moves )
+            ++c[m];
+        return c['L'] == c['R'] && c['U'] == c['D'];
+    }
+};
