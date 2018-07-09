@@ -40,11 +40,39 @@ int numJewelsInStones(string J, string S) {
         for (char s : S) if (setJ.count(s)) res++;
         return res;
     }
-    
+ 
+//C++
+class Solution {
+public:
+    int numJewelsInStones(string J, string S) {
+        int len = J.size();
+        int sum = 0;
+        for(int i=0 ; i<len ; i++)
+            sum += count(S.begin(),S.end(),J[i]);
+        return sum;
+            
+    }
+};
     
 //他山之玉
 //Python
 return len([x for x in S if x in J])
+
+//C++
+class Solution {
+public:
+    int numJewelsInStones(string J, string S) {
+        unordered_set<char>s(J.begin(),J.end());
+        int ans = 0;
+        for(auto c : S)
+        {
+            if(s.count(c) > 0) {
+                ans ++;
+            }
+        }
+        return ans;
+    }
+};
 
 //C
 //思路：用字符串中的字符的ASCII值作为下标，记录字符串S中各个字符出现的次数，然后比较J中包含的S的字符所代表的次数值相加
