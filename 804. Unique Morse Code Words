@@ -1,0 +1,41 @@
+C++
+int uniqueMorseRepresentations(vector<string>& words) {
+    vector<string> morse_code = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+    unordered_set<string> gen_codes;           //重点
+    for(auto word : words) {
+        string code = "";
+        for(auto ch : word)
+            code += morse_code[ch - 'a'];
+        gen_codes.insert(code);
+    }
+    
+    return gen_codes.size();
+}
+
+
+
+Python：
+ def uniqueMorseRepresentations(self, words):
+        d = [".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--",
+             "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."]
+        return len({''.join(d[ord(i) - ord('a')] for i in w) for w in words})
+        
+        
+python：
+class Solution(object):
+    def uniqueMorseRepresentations(self, words):
+        """
+        :type words: List[str]
+        :rtype: int
+        """
+        map_=[".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."]
+        
+        res=set()
+        
+        for word in words:
+            val=""
+            for s in word:
+                val+=map_[ord(s)-ord('a')]
+            res.add(val)
+        
+        return len(res)
