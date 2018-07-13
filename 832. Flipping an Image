@@ -1,0 +1,20 @@
+Python:
+class Solution(object):
+    def flipAndInvertImage(self, A):
+        """
+        :type A: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        return [[1-i for i in row[::-1]] for row in A]
+        
+        
+class Solution:
+    def flipAndInvertImage(self, A):
+        return [list(map(lambda b: 1 - b, a[::-1])) for a in A]
+        
+C++：
+    vector<vector<int>> flipAndInvertImage(vector<vector<int>>& A) {
+        for (auto & row : A) reverse(row.begin(), row.end());
+        for (auto & row : A) for (int & i: row) i^=1;
+        return A;
+    }
