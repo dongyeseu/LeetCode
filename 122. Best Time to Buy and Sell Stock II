@@ -1,0 +1,14 @@
+C++:
+int maxProfit(vector<int> &prices) {
+    int ret = 0;
+    for (size_t p = 1; p < prices.size(); ++p) 
+      ret += max(prices[p] - prices[p - 1], 0);    
+    return ret;
+}
+
+python:
+class Solution(object):
+    def maxProfit(self, prices):
+        return sum(max(prices[i + 1] - prices[i], 0) for i in range(len(prices) - 1))
+        
+   
