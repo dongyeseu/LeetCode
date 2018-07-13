@@ -1,0 +1,45 @@
+Python
+    def hammingDistance(self, x, y):
+        """
+        :type x: int
+        :type y: int
+        :rtype: int
+        """
+        return bin(x^y).count('1')
+        
+        
+        
+        
+C++:
+class Solution {
+public:
+    int hammingDistance(int x, int y) {
+        int dist = 0, n = x ^ y;
+        while (n) {
+            ++dist;
+            n &= n - 1;
+        }
+        return dist;
+    }
+};
+
+
+C++:
+class Solution {
+public:
+    int hammingDistance(int x, int y) {
+        return __builtin_popcount(x^y);
+    }
+};
+
+
+C++:
+ int hammingDistance(int x, int y) {
+        int xorr = x ^ y;
+        int dig = 0;
+        while(xorr > 0){
+            dig += xorr & 1;
+            xorr >>= 1;
+        }
+        return dig;
+}
