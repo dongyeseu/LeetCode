@@ -1,0 +1,35 @@
+
+C++：
+class Solution {
+public:
+    string toLowerCase(string str) {
+        int asciiConverter = 'a' - 'A';
+        for (int i=0; i < str.size(); i++)
+        {
+            if ((str[i] >= 'A') && (str[i] <= 'Z'))
+            {
+                str[i] += asciiConverter;
+            }
+        }
+        return str;
+    }
+};
+
+Python：
+def ToLower(self,str):
+	return str.lower()
+  
+  
+  
+C++：
+class Solution {
+public:
+    string toLowerCase(string str) {
+        for(int i = 0; i < str.length(); i++){
+            char* c = &str[i];
+            if(*c >= 'A' && *c <= 'Z')
+                *c |= 0x20;           
+        }
+        return str;
+    }
+};
