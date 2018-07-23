@@ -1,0 +1,80 @@
+
+
+
+//C++ ： DP算法
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        const int n = nums.size();
+        if (n == 0) return 0;
+        if (n == 1) return nums[0];
+        if (n == 2) return max(nums[0], nums[1]);
+        vector<int> f(n, 0);
+        f[0] = nums[0];
+        f[1] = max(nums[0], nums[1]);
+        for (int i = 2; i < n; ++i)
+            f[i] = max(f[i-2] + nums[i], f[i-1]);
+        return f[n-1];
+    }
+};
+
+
+
+
+//Java ：DP
+public class Solution {
+    public int rob(int[] num) {
+        int last = 0;
+        int now = 0;
+        int tmp;
+        for (int n :num) {
+            tmp = now;
+            now = Math.max(last + n, now);
+            last = tmp;
+        }
+        return now;        
+    }
+}
+
+
+//C++ ： DP
+/*
+For every house k, there are two options: either to rob it (include this house: i) or not rob it (exclude this house: e).
+
+Include this house:
+i = num[k] + e (money of this house + money robbed excluding the previous house)
+
+Exclude this house:
+e = max(i, e) (max of money robbed including the previous house or money robbed excluding the previous house)
+(note that i and e of the previous step, that's why we use tmp here to store the previous i when calculating e, to make O(1) space)
+
+Here is the code:
+*/
+public class Solution {
+    public int rob(int[] num) {
+        int i = 0;
+        int e = 0;
+        for (int k = 0; k<num.length; k++) {
+            int tmp = i;
+            i = num[k] + e;
+            e = Math.max(tmp, e);
+        }
+        return Math.max(i,e);
+    }
+}
+
+//C++
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        int x = 0, y = 0;
+        for (int i = 0; i < nums.size(); ++i) {
+            if (i & 1) {
+                x = max(x + nums[i], y);
+            } else {
+                y = max(y + nums[i], x);
+            }
+        }
+        return max(x, y);
+    }
+};
