@@ -1,0 +1,82 @@
+//C++ 
+Solution #1: Bottom-Up dynamic programming
+
+Let dp[i] be the minimum cost to reach the i-th stair.
+
+Base cases:
+
+dp[0]=cost[0]
+dp[1]=cost[1]
+
+DP formula:
+
+dp[i]=cost[i]+min(dp[i-1],dp[i-2])
+
+Note: the top floor n can be reached from either 1 or 2 stairs away, return the minimum.
+
+class Solution {
+public:
+    int minCostClimbingStairs(vector<int>& cost) {
+        int n=(int)cost.size();
+        vector<int> dp(n);
+        dp[0]=cost[0];
+        dp[1]=cost[1];
+        for (int i=2; i<n; ++i)
+            dp[i]=cost[i]+min(dp[i-2],dp[i-1]);
+        return min(dp[n-2],dp[n-1]);
+    }
+};
+Solution #2: same DP concept as above, however, more concisely we only need the last two answers ( b and c ) in order to calculate the current answer a as follows:
+
+Let a be the min cost to reach the i-th stair
+Let b be the min cost to reach the i-1th stair ( one stair away from i-th stair )
+Let c be the min cost to reach the i-2th stair ( two stairs away from i-th stair )
+
+Base cases:
+
+c=cost[0] ( two stairs away from i-th stair starting at i=2 )
+b=cost[1] ( one stair away from i-th stair starting at i=2 )
+
+DP formula:
+
+a=cost[i]+min(b,c)
+
+class Solution {
+public:
+    int minCostClimbingStairs(vector<int>& cost) {
+        int b=cost[1],c=cost[0];
+        for (int i=2,a; i<cost.size(); ++i,c=b,b=a) a=cost[i]+min(b,c);
+        return min(b,c);
+    }
+};
+
+
+
+
+
+
+//Python 
+def minCostClimbingStairs(self, cost):
+    n = len(cost)
+    if n == 0 or n == 1:
+        return 0
+    min_cost0, min_cost1 = cost[0], cost[1]
+    for i in range(2, n):
+        min_cost0, min_cost1 = min_cost1, min(min_cost0, min_cost1) + cost[i]
+
+    return min(min_cost0, min_cost1)
+
+//Pyhton
+class Solution:
+    def minCostClimbingStairs(self, cost):
+
+        dp = [0]*(len(cost))
+        dp[0], dp[1]=cost[0], cost[1]
+        
+        for i in range(2,len(cost)):
+            dp[i] = min(dp[i-2]+cost[i], dp[i-1]+cost[i])
+        
+        return min(dp[-2], dp[-1])
+
+
+
