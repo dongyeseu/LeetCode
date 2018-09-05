@@ -1,0 +1,51 @@
+/*
+Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
+
+Note: A leaf is a node with no children.
+
+Example:
+
+Given the below binary tree and sum = 22,
+
+      5
+     / \
+    4   8
+   /   / \
+  11  13  4
+ /  \      \
+7    2      1
+return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
+*/
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void DFS(TreeNode * root,int tempsum,int sum,bool &flag)
+    {
+        if(root->left==NULL && root->right==NULL)
+        {
+            if(tempsum == sum)
+                flag = true;
+            return;
+        }
+        if(root->left!=NULL)
+            DFS(root->left,tempsum+root->left->val,sum,flag);
+        if(root->right!=NULL)
+            DFS(root->right,tempsum+root->right->val,sum,flag);
+    }
+    bool hasPathSum(TreeNode* root, int sum) {
+        bool flag = false;
+        if(root == NULL)
+            return flag;
+        DFS(root,root->val,sum,flag);
+        return flag;
+    }
+};
