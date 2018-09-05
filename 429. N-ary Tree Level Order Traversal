@@ -1,0 +1,70 @@
+/*
+Given an n-ary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by level).
+For example, given a 3-ary tree:
+ 
+We should return its level order traversal:
+
+[
+     [1],
+     [3,2,4],
+     [5,6]
+]
+ 
+Note:
+
+The depth of the tree is at most 1000.
+The total number of nodes is at most 5000.
+*/
+
+//Python
+class Solution(object):
+    def levelOrder(self, root):
+        q, ret = [root], []
+        while any(q):
+            ret.append([node.val for node in q])
+            q = [child for node in q for child in node.children if child]
+        return ret
+        
+        
+//Java
+class Solution {
+    public List<List<Integer>> levelOrder(Node root) {
+        List<List<Integer>> res = new LinkedList();
+        if (root == null) return res;
+        Queue<Node> queue = new LinkedList();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            List<Integer> li = new LinkedList();
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                Node node = queue.poll();
+                li.add(node.val);
+                queue.addAll(node.children);
+            }
+            res.add(li);
+        }
+        return res;
+    }
+}
+
+//C++
+class Solution {
+public:
+    vector<vector<int>> levelOrder(Node* root) {
+        vector<vector<int>> ret;
+        if (!root)
+            return ret;
+        ret.push_back(vector<int> {root->val});
+        for (auto child : root->children) {
+            vector<vector<int>> r = levelOrder(child);
+            for (int i = 0; i < r.size(); ++i)
+                if (i + 1 > ret.size() - 1)
+                    ret.push_back(r[i]);
+                else
+                    ret[i + 1].insert(ret[i + 1].end(), r[i].begin(), r[i].end());
+        }
+        return ret;       
+    }
+};
+        
+    
