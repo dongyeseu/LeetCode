@@ -1,0 +1,61 @@
+   
+//C++
+   TreeNode* increasingBST(TreeNode* root, TreeNode* tail = NULL) {
+        if (!root) return tail;
+        TreeNode* res = increasingBST(root->left, root);
+        root->left = NULL;
+        root->right = increasingBST(root->right, tail);
+        return res;
+    }
+    
+    
+    
+//Java 
+   TreeNode prev=null, head=null;
+    public TreeNode increasingBST(TreeNode root) {
+        if(root==null) return null;   
+        increasingBST(root.left);  
+        if(prev!=null) { 
+        	root.left=null; // we no  longer needs the left  side of the node, so set it to null
+        	prev.right=root; 
+        }
+        if(head==null) head=root; // record the most left node as it will be our root
+        prev=root; //keep track of the prev node
+        increasingBST(root.right); 
+        return head;
+    }
+    
+    
+    
+    
+    
+//C++
+class Solution {
+    private TreeNode result;
+    private TreeNode pre;
+    public TreeNode increasingBST(TreeNode root) {
+        inorder(root);
+        return result;
+    }
+    private void inorder(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        inorder(root.left);
+        if (result == null) {
+            result = root;
+        } else {
+            pre.right = root;
+        }
+        pre = root;
+        root.left = null;
+        inorder(root.right);
+    }
+}
+    
+    
+        
+    
+    
+    
+    
