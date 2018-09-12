@@ -1,0 +1,96 @@
+
+
+
+
+DFS solution:
+
+public class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        List<List<Integer>> wrapList = new LinkedList<List<Integer>>();
+        
+        if(root == null) return wrapList;
+        
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            int levelNum = queue.size();
+            List<Integer> subList = new LinkedList<Integer>();
+            for(int i=0; i<levelNum; i++) {
+                if(queue.peek().left != null) queue.offer(queue.peek().left);
+                if(queue.peek().right != null) queue.offer(queue.peek().right);
+                subList.add(queue.poll().val);
+            }
+            wrapList.add(0, subList);
+        }
+        return wrapList;
+    }
+}
+BFS solution:
+
+public class Solution {
+        public List<List<Integer>> levelOrderBottom(TreeNode root) {
+            List<List<Integer>> wrapList = new LinkedList<List<Integer>>();
+            levelMaker(wrapList, root, 0);
+            return wrapList;
+        }
+        
+        public void levelMaker(List<List<Integer>> list, TreeNode root, int level) {
+            if(root == null) return;
+            if(level >= list.size()) {
+                list.add(0, new LinkedList<Integer>());
+            }
+            levelMaker(list, root.left, level+1);
+            levelMaker(list, root.right, level+1);
+            list.get(list.size()-level-1).add(root.val);
+        }
+    }
+    
+    
+    
+    
+    
+//C++
+vector<vector<int> > levelOrder(TreeNode *root) {
+	vector<vector<int> > retVal;
+
+	levelOrder(root, retVal, 0);
+
+	reverse(retVal.begin(), retVal.end());
+
+	return retVal;
+}
+
+void levelOrder(TreeNode* root, vector<vector<int> > &v, int currLevel) {
+	if (root == NULL) {
+		return;
+	}
+
+	if (v.empty() || currLevel > (v.size() - 1)) {
+		v.push_back(vector<int>());
+	}
+
+	v[currLevel].push_back(root->val);
+
+	levelOrder(root->left, v, currLevel + 1);
+	levelOrder(root->right, v, currLevel + 1);
+  
+  
+  //C++
+  int depth(TreeNode *root) {
+    if (!root) return 0;
+    return max(depth(root->left),depth(root->right))+1;
+}
+
+void levelOrder(vector<vector<int>> &ans, TreeNode *node, int level) {
+    if (!node) return;
+    ans[level].push_back(node->val);
+    levelOrder(ans,node->left,level-1);
+    levelOrder(ans,node->right,level-1);
+}
+
+vector<vector<int>> levelOrderBottom(TreeNode* root) {
+    int d = depth(root);
+    vector<vector<int>> ans(d,vector<int> {});
+    levelOrder(ans,root,d-1);
+    return ans;
+}
