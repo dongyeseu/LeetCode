@@ -1,0 +1,115 @@
+/*
+Invert a binary tree.
+
+Example:
+
+Input:
+
+     4
+   /   \
+  2     7
+ / \   / \
+1   3 6   9
+Output:
+
+     4
+   /   \
+  7     2
+ / \   / \
+9   6 3   1
+*/
+
+DFS :
+Lets start with straightforward - recursive DFS - it's easy to write and pretty much concise.
+
+public class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        
+        if (root == null) {
+            return null;
+        }
+
+        final TreeNode left = root.left,
+                right = root.right;
+        root.left = invertTree(right);
+        root.right = invertTree(left);
+        return root;
+    }
+}
+
+
+BFS:
+public class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        
+        if (root == null) {
+            return null;
+        }
+
+        final Deque<TreeNode> stack = new LinkedList<>();
+        stack.push(root);
+        
+        while(!stack.isEmpty()) {
+            final TreeNode node = stack.pop();
+            final TreeNode left = node.left;
+            node.left = node.right;
+            node.right = left;
+            
+            if(node.left != null) {
+                stack.push(node.left);
+            }
+            if(node.right != null) {
+                stack.push(node.right);
+            }
+        }
+        return root;
+    }
+}
+
+//Python
+def invertTree(self, root):
+    if root:
+        root.left, root.right = self.invertTree(root.right), self.invertTree(root.left)
+        return root
+
+//C++  BFS
+TreeNode* invertTree(TreeNode* root) {
+    
+    if(nullptr == root) return root;
+    
+    queue<TreeNode*> myQueue;   // our queue to do BFS
+    myQueue.push(root);         // push very first item - root
+
+    while(!myQueue.empty()){    // run until there are nodes in the queue 
+        
+        TreeNode *node = myQueue.front();  // get element from queue
+        myQueue.pop();                     // remove element from queue
+                 
+        if(node->left != nullptr){         // add left kid to the queue if it exists
+            myQueue.push(node->left);
+        }
+        
+        if(node->right != nullptr){        // add right kid 
+            myQueue.push(node->right);
+        }
+        
+        // invert left and right pointers      
+        TreeNode* tmp = node->left;
+        node->left = node->right;
+        node->right = tmp;
+
+    }
+
+    return root;
+}
+
+
+//C
+struct TreeNode* invertTree(struct TreeNode* root) {
+    if(root==NULL)
+        return NULL;
+    struct TreeNode *tmp = root->left;
+    root->left = invertTree(root->right);
+    root->right = invertTree(tmp);
+    return root;
+}
