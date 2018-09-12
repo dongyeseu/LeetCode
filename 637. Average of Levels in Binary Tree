@@ -1,0 +1,78 @@
+/*
+Given a non-empty binary tree, return the average value of the nodes on each level in the form of an array.
+Example 1:
+Input:
+    3
+   / \
+  9  20
+    /  \
+   15   7
+Output: [3, 14.5, 11]
+Explanation:
+The average value of nodes on level 0 is 3,  on level 1 is 14.5, and on level 2 is 11. Hence return [3, 14.5, 11].
+Note:
+The range of node's value is in the range of 32-bit signed integer.
+*/
+
+//Java
+public List<Double> averageOfLevels(TreeNode root) {
+    List<Double> result = new ArrayList<>();
+    Queue<TreeNode> q = new LinkedList<>();
+    
+    if(root == null) return result;
+    q.add(root);
+    while(!q.isEmpty()) {
+        int n = q.size();
+        double sum = 0.0;
+        for(int i = 0; i < n; i++) {
+            TreeNode node = q.poll();
+            sum += node.val;
+            if(node.left != null) q.offer(node.left);
+            if(node.right != null) q.offer(node.right);
+        }
+        result.add(sum / n);
+    }
+    return result;
+}
+
+
+//C++
+ vector<double> averageOfLevels(TreeNode* root) {
+        vector<double> res;
+        queue<TreeNode*> q;
+        q.push(root);
+        while(!q.empty()) {
+            long temp=0;
+            int s=q.size();
+            for(int i=0;i<s;i++) {
+                TreeNode* t=q.front();
+                q.pop();
+                if(t->left) q.push(t->left);
+                if(t->right) q.push(t->right);
+                temp+=t->val;
+            }
+            res.push_back((double)temp/s);
+        }
+        return res;
+    }
+ 
+
+//Python
+def averageOfLevels(self, root):
+    info = []
+    def dfs(node, depth = 0):
+        if node:
+            if len(info) <= depth:
+                info.append([0, 0])
+            info[depth][0] += node.val
+            info[depth][1] += 1
+            dfs(node.left, depth + 1)
+            dfs(node.right, depth + 1)
+    dfs(root)
+
+    return [s/float(c) for s, c in info]
+
+
+
+
+
