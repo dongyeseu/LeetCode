@@ -1,0 +1,129 @@
+/*
+
+
+
+*/
+
+//Java
+public List<String> binaryTreePaths(TreeNode root) {
+    List<String> answer = new ArrayList<String>();
+    if (root != null) searchBT(root, "", answer);
+    return answer;
+}
+private void searchBT(TreeNode root, String path, List<String> answer) {
+    if (root.left == null && root.right == null) answer.add(path + root.val);
+    if (root.left != null) searchBT(root.left, path + root.val + "->", answer);
+    if (root.right != null) searchBT(root.right, path + root.val + "->", answer);
+}
+
+//Java
+public List<String> binaryTreePaths(TreeNode root) {
+        
+        List<String> paths = new LinkedList<>();
+
+        if(root == null) return paths;
+        
+        if(root.left == null && root.right == null){
+            paths.add(root.val+"");
+            return paths;
+        }
+
+         for (String path : binaryTreePaths(root.left)) {
+             paths.add(root.val + "->" + path);
+         }
+
+         for (String path : binaryTreePaths(root.right)) {
+             paths.add(root.val + "->" + path);
+         }
+
+         return paths;
+        
+    }
+    
+ //C++ 
+ void binaryTreePaths(vector<string>& result, TreeNode* root, string t) {
+    if(!root->left && !root->right) {
+        result.push_back(t);
+        return;
+    }
+
+    if(root->left) binaryTreePaths(result, root->left, t + "->" + to_string(root->left->val));
+    if(root->right) binaryTreePaths(result, root->right, t + "->" + to_string(root->right->val));
+}
+
+vector<string> binaryTreePaths(TreeNode* root) {
+    vector<string> result;
+    if(!root) return result;
+    
+    binaryTreePaths(result, root, to_string(root->val));
+    return result;
+}
+
+//Python
+def binaryTreePaths(self, root):
+    if not root:
+        return []
+    return [str(root.val) + '->' + path
+            for kid in (root.left, root.right) if kid
+            for path in self.binaryTreePaths(kid)] or [str(root.val)]
+            
+            
+ //C++ 
+ class Solution {
+public:
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> res;
+        if (root == NULL) return res;
+        stack<TreeNode*> s;
+        stack<string> pathStack;
+        s.push(root);
+        pathStack.push(to_string(root->val));
+        
+        while (!s.empty()) {
+            TreeNode * curNode = s.top(); s.pop();
+            string tmpPath = pathStack.top(); pathStack.pop();
+            
+            if (curNode->left == NULL && curNode->right == NULL) {
+                res.push_back(tmpPath); continue;
+            }
+            
+            if (curNode->left != NULL) {
+                s.push(curNode->left);
+                pathStack.push(tmpPath + "->" + to_string(curNode->left->val));
+            }
+            
+            if (curNode->right != NULL) {
+                s.push(curNode->right);
+                pathStack.push(tmpPath + "->" + to_string(curNode->right->val));
+            }
+        }
+        
+        return res;
+    }
+};
+
+//recursive version
+class Solution {
+public:
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> res;
+        if (root == NULL) return res;
+        dfs(root, to_string(root->val), res);
+        return res;
+    }
+    
+    void dfs(TreeNode* root, string path, vector<string>& res) {
+        if (root->left == NULL && root->right == NULL) {
+            res.push_back(path);
+        }
+        
+        if (root->left != NULL)
+            dfs(root->left, path + "->" + to_string(root->left->val), res);
+        
+        if (root->right != NULL)
+            dfs(root->right, path + "->" + to_string(root->right->val), res);
+    }
+};
+
+
+
